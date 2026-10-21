@@ -220,3 +220,4 @@ export const SkillRadarHexagonChart: React.FC<SkillRadarHexagonChartProps> = ({
     </div>
   );
 };
+

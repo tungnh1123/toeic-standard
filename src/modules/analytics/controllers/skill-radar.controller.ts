@@ -77,3 +77,4 @@ export class SkillRadarController {
     return await this.skillRadarService.recalculateSkills(user.sub);
   }
 }
+

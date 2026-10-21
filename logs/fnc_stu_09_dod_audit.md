@@ -53,3 +53,4 @@
   * Thẻ chẩn đoán 2 điểm yếu ($W_1, W_2$) kèm các nút điều hướng làm bài tập khắc phục trực tiếp.
   * Báo cáo Sổ từ khó ($EF \le 1.70$) kèm số chu kỳ và kỳ hạn ôn.
   * Bảng dòng thời gian snapshots lịch sử phát triển năng lực qua các mốc tính toán.
+
