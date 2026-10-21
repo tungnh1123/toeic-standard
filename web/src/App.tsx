@@ -21,6 +21,8 @@ import {
 import { FlashcardStudySessionModal } from './components/FlashcardStudySessionModal';
 import { NotebooksView } from './components/NotebooksView';
 import { GrammarView } from './components/GrammarView';
+import { StreakFlameWidget } from './components/StreakFlameWidget';
+import { StreakDetailModal } from './components/StreakDetailModal';
 
 interface DeckItem {
   id: string;
@@ -75,6 +77,7 @@ export default function App() {
   const [targetScoreInput, setTargetScoreInput] = useState('750');
   const [targetDateInput, setTargetDateInput] = useState('2026-12-31');
   const [selectedStudyDeck, setSelectedStudyDeck] = useState<{ id: string; title: string } | null>(null);
+  const [isStreakModalOpen, setIsStreakModalOpen] = useState(false);
 
   const authHeaders = token ? { Authorization: `Bearer ${token}` } : {};
 
@@ -221,6 +224,13 @@ export default function App() {
               <User size={16} />
               Hồ Sơ Mục Tiêu
             </button>
+
+            {token && (
+              <StreakFlameWidget
+                token={token}
+                onRequireAuth={() => setIsAuthModalOpen(true)}
+              />
+            )}
 
             {token ? (
               <button
@@ -387,12 +397,15 @@ export default function App() {
                   <div className="flex-1 text-center md:text-left">
                     <h2 className="text-xl font-bold text-slate-800">{profileData.user.fullName}</h2>
                     <p className="text-xs text-slate-400 mt-0.5">{profileData.user.email}</p>
-                    <div className="inline-flex items-center gap-1.5 bg-amber-50 border border-amber-200 px-3 py-1 rounded-full mt-3">
+                    <button
+                      onClick={() => setIsStreakModalOpen(true)}
+                      className="inline-flex items-center gap-1.5 bg-amber-50 hover:bg-amber-100 border border-amber-200 px-3 py-1 rounded-full mt-3 transition cursor-pointer"
+                    >
                       <Flame size={16} className="text-amber-600 fill-amber-500" />
                       <span className="text-xs font-bold text-amber-800">
-                        Chuỗi {profileData.user.currentStreak} ngày chuyên cần
+                        Chuỗi {profileData.user.currentStreak} ngày chuyên cần • Xem chi tiết
                       </span>
-                    </div>
+                    </button>
                   </div>
                 </div>
 
@@ -597,6 +610,15 @@ export default function App() {
           deckTitle={selectedStudyDeck.title}
           token={token}
           onClose={() => setSelectedStudyDeck(null)}
+          onRequireAuth={() => setIsAuthModalOpen(true)}
+        />
+      )}
+
+      {/* STREAK DETAIL MODAL */}
+      {isStreakModalOpen && (
+        <StreakDetailModal
+          token={token}
+          onClose={() => setIsStreakModalOpen(false)}
           onRequireAuth={() => setIsAuthModalOpen(true)}
         />
       )}
