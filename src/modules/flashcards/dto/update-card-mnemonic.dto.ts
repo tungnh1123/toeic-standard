@@ -11,3 +11,4 @@ export class UpdateCardMnemonicDto {
   @MaxLength(500, { message: 'Ví dụ cá nhân tối đa 500 ký tự.' })
   customExample?: string;
 }
+

@@ -42,3 +42,4 @@ export class UserNotebookCardEntity {
   @CreateDateColumn({ name: 'added_at', type: 'timestamptz' })
   addedAt: Date;
 }
+

@@ -26,3 +26,4 @@ export class BatchAddCardsToNotebookDto {
   @IsUUID('4', { each: true, message: 'Từng phần tử phải là định dạng UUID.' })
   flashcardIds: string[];
 }
+

@@ -33,3 +33,4 @@ export class CreateNotebookDto {
   @IsBoolean({ message: 'isPinned phải là giá trị boolean.' })
   isPinned?: boolean;
 }
+

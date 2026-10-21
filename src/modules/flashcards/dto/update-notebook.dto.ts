@@ -32,3 +32,4 @@ export class UpdateNotebookDto {
   @IsBoolean({ message: 'isPinned phải là giá trị boolean.' })
   isPinned?: boolean;
 }
+

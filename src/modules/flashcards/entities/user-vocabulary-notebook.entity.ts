@@ -63,3 +63,4 @@ export class UserVocabularyNotebookEntity {
   @OneToMany(() => UserNotebookCardEntity, (nc) => nc.notebook)
   cards?: UserNotebookCardEntity[];
 }
+

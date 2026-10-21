@@ -72,3 +72,4 @@ export class TroubledWordsResponseDto {
   total: number;
   items: TroubledWordItemDto[];
 }
+

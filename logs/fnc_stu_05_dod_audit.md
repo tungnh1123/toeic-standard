@@ -42,3 +42,4 @@
 * [x] **TanStack Query v5 Hooks:** `useUserNotebooks`, `useCreateNotebook`, `useUpdateNotebook`, `useDeleteNotebook`, `useNotebookCards`, `useAddCardToNotebook`, `useRemoveCardFromNotebook`, `useUpdateCardMnemonic`, `useQuickStar`, `useSmartTroubledWords` chuẩn hóa qua `notebookKeys`.
 * [x] **Mobile Component:** `NotebookListScreen.tsx` hiển thị lưới sổ tay, biểu tượng màu sắc, nhãn STARRED và huy hiệu số từ đã lưu.
 * [x] **Web App Tab:** Tích hợp tab `Sổ Tay & Từ Khó` trên Web Portal với giao diện quản lý sổ tay, xem thẻ kèm mẹo nhớ cá nhân và danh sách từ khó SM-2.
+
