@@ -21,3 +21,4 @@ export class WritingRubricDto {
   @Type(() => RubricCriterionDto)
   criteria: RubricCriterionDto[];
 }
+

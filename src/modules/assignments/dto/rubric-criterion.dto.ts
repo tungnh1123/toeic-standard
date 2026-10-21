@@ -19,3 +19,4 @@ export class RubricCriterionDto {
   @Max(100, { message: 'Điểm tối đa maxScore không vượt quá 100.' })
   maxScore: number;
 }
+

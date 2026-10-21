@@ -24,3 +24,4 @@ export class FilterAssignmentDto {
   @IsOptional()
   limit?: number = 20;
 }
+

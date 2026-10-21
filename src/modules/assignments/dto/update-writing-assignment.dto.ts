@@ -16,3 +16,4 @@ export class UpdateWritingAssignmentDto {
   @IsOptional()
   rubric?: WritingRubricDto;
 }
+
