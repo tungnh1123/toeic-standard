@@ -9,8 +9,10 @@ import {
   Layers,
   GraduationCap,
   RotateCcw,
+  HelpCircle,
 } from 'lucide-react';
 import { GrammarReaderModal } from './GrammarReaderModal';
+import { GrammarQuizModal } from './GrammarQuizModal';
 
 interface GrammarCategory {
   id: string;
@@ -48,6 +50,7 @@ interface GrammarViewProps {
 export const GrammarView: React.FC<GrammarViewProps> = ({ token, onRequireAuth }) => {
   const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(null);
   const [activeReadingLessonId, setActiveReadingLessonId] = useState<string | null>(null);
+  const [activeQuizLesson, setActiveQuizLesson] = useState<{ id: string; title: string } | null>(null);
 
   const authHeaders = token ? { Authorization: `Bearer ${token}` } : {};
 
@@ -303,8 +306,26 @@ export const GrammarView: React.FC<GrammarViewProps> = ({ token, onRequireAuth }
                         </div>
                       </div>
 
-                      <div className="shrink-0 flex items-center justify-end">
-                        <button className="flex items-center gap-1.5 rounded-xl bg-blue-50 px-4 py-2 text-xs font-bold text-blue-700 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                      <div className="shrink-0 flex items-center gap-2 justify-end">
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            if (!token) {
+                              onRequireAuth();
+                              return;
+                            }
+                            setActiveQuizLesson({ id: lesson.id, title: lesson.title });
+                          }}
+                          className="flex items-center gap-1 rounded-xl border border-blue-200 bg-white px-3 py-2 text-xs font-bold text-blue-700 hover:bg-blue-50 transition-colors"
+                          title="Làm bài tập trắc nghiệm củng cố"
+                        >
+                          <HelpCircle className="h-3.5 w-3.5 text-blue-600" />
+                          <span>Làm Quiz</span>
+                        </button>
+                        <button
+                          onClick={() => setActiveReadingLessonId(lesson.id)}
+                          className="flex items-center gap-1.5 rounded-xl bg-blue-50 px-4 py-2 text-xs font-bold text-blue-700 group-hover:bg-blue-600 group-hover:text-white transition-colors"
+                        >
                           <span>{lesson.isCompleted ? 'Đọc lại' : 'Đọc bài'}</span>
                           <ChevronRight className="h-3.5 w-3.5" />
                         </button>
@@ -329,6 +350,17 @@ export const GrammarView: React.FC<GrammarViewProps> = ({ token, onRequireAuth }
           token={token}
           onClose={() => setActiveReadingLessonId(null)}
           onSelectLesson={(newLessonId) => setActiveReadingLessonId(newLessonId)}
+          onRequireAuth={onRequireAuth}
+        />
+      )}
+
+      {/* 5. MODAL LÀM QUIZ TRẮC NGHIỆM CỦNG CỐ */}
+      {activeQuizLesson && (
+        <GrammarQuizModal
+          lessonId={activeQuizLesson.id}
+          lessonTitle={activeQuizLesson.title}
+          token={token}
+          onClose={() => setActiveQuizLesson(null)}
           onRequireAuth={onRequireAuth}
         />
       )}

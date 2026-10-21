@@ -13,6 +13,7 @@ import {
   X,
 } from 'lucide-react';
 import { MarkdownRenderer } from './MarkdownRenderer';
+import { GrammarQuizModal } from './GrammarQuizModal';
 
 interface TableOfContentItem {
   id: string;
@@ -59,6 +60,7 @@ export const GrammarReaderModal: React.FC<GrammarReaderModalProps> = ({
   const [scrollPercent, setScrollPercent] = useState<number>(0);
   const [isTocOpen, setIsTocOpen] = useState<boolean>(false);
   const [showCompletionToast, setShowCompletionToast] = useState<boolean>(false);
+  const [isQuizModalOpen, setIsQuizModalOpen] = useState<boolean>(false);
 
   const authHeaders = token ? { Authorization: `Bearer ${token}` } : {};
 
@@ -367,6 +369,13 @@ export const GrammarReaderModal: React.FC<GrammarReaderModalProps> = ({
 
               {lesson.hasQuiz && (
                 <button
+                  onClick={() => {
+                    if (!token) {
+                      onRequireAuth();
+                      return;
+                    }
+                    setIsQuizModalOpen(true);
+                  }}
                   className="flex items-center gap-1.5 rounded-xl bg-blue-600 px-4 py-2.5 text-xs font-extrabold text-white shadow-sm hover:bg-blue-700 transition-colors"
                   title="Làm bài tập trắc nghiệm củng cố"
                 >
@@ -391,6 +400,17 @@ export const GrammarReaderModal: React.FC<GrammarReaderModalProps> = ({
           </div>
         </div>
       </div>
+
+      {/* QUIZ MODAL */}
+      {isQuizModalOpen && (
+        <GrammarQuizModal
+          lessonId={lesson.id}
+          lessonTitle={lesson.title}
+          token={token}
+          onClose={() => setIsQuizModalOpen(false)}
+          onRequireAuth={onRequireAuth}
+        />
+      )}
     </div>
   );
 };
