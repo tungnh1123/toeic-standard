@@ -18,11 +18,20 @@ import { SubmissionsModule } from './modules/submissions/submissions.module';
   imports: [
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: process.env.DB_HOST || 'localhost',
-      port: Number(process.env.DB_PORT) || 5432,
-      username: process.env.DB_USERNAME || 'rl_admin',
-      password: process.env.DB_PASSWORD || 'admin',
-      database: process.env.DB_NAME || 'toeic_db',
+      ...(process.env.DATABASE_URL
+        ? { url: process.env.DATABASE_URL }
+        : {
+            host: process.env.DB_HOST || 'localhost',
+            port: Number(process.env.DB_PORT) || 5432,
+            username: process.env.DB_USERNAME || 'rl_admin',
+            password: process.env.DB_PASSWORD || 'admin',
+            database: process.env.DB_NAME || 'toeic_db',
+          }),
+      ssl:
+        process.env.DB_SSL === 'true' ||
+        Boolean(process.env.DATABASE_URL && process.env.DATABASE_URL.includes('sslmode=require'))
+          ? { rejectUnauthorized: false }
+          : false,
       autoLoadEntities: true,
       synchronize: false,
       logging: process.env.NODE_ENV === 'development',
