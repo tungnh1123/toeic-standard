@@ -12,3 +12,4 @@ export class GrammarLessonItemDto {
   isBookmarked: boolean;
   lastReadAt?: string | null;
 }
+

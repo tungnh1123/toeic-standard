@@ -22,3 +22,4 @@ export class GrammarLessonDetailResponseDto {
   hasQuiz: boolean;
   quizCount: number;
 }
+

@@ -12,3 +12,4 @@ export class GrammarCategoryResponseDto {
   completedLessons: number;
   progressPercentage: number;
 }
+

@@ -59,3 +59,4 @@ export class GrammarLessonEntity {
   @OneToMany(() => UserGrammarBookmarkEntity, (bookmark) => bookmark.lesson)
   bookmarks: UserGrammarBookmarkEntity[];
 }
+

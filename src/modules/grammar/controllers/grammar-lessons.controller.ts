@@ -118,3 +118,4 @@ export class GrammarLessonsController {
     return await this.grammarService.toggleBookmark(user.sub, lessonId);
   }
 }
+

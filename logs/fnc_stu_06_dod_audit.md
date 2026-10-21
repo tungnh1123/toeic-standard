@@ -51,3 +51,4 @@
   * Bảng điều khiển mục lục (TOC Slide-out Drawer) cuộn mượt đến từng phần.
   * Nút "Đã hiểu bài", "Bookmark", chuyển bài trước/sau và sẵn sàng kết nối sang Quiz củng cố.
 * [x] **Web App Tab Integration:** Tích hợp tab `Lý Thuyết Ngữ Pháp` trên Web Portal với danh mục chuyên đề, thống kê % tiến độ, mục "Vừa đọc gần đây" và bài giảng mẫu phong phú.
+

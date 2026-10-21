@@ -46,3 +46,4 @@ export class GrammarCategoryEntity {
   @OneToMany(() => GrammarLessonEntity, (lesson) => lesson.category)
   lessons: GrammarLessonEntity[];
 }
+

@@ -10,3 +10,4 @@ export class UpdateReadingProgressDto {
   @IsBoolean({ message: 'Trạng thái hoàn thành phải là giá trị boolean.' })
   markAsCompleted?: boolean;
 }
+
