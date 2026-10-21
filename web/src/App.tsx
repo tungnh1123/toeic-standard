@@ -21,6 +21,7 @@ import {
   HelpCircle,
   PenTool,
   Mic,
+  ClipboardCheck,
 } from 'lucide-react';
 import { FlashcardStudySessionModal } from './components/FlashcardStudySessionModal';
 import { NotebooksView } from './components/NotebooksView';
@@ -29,6 +30,7 @@ import { SkillRadarView } from './components/SkillRadarView';
 import { AdminQuizQuestionBankView } from './components/AdminQuizQuestionBankView';
 import { AdminWritingAssignmentsView } from './components/AdminWritingAssignmentsView';
 import { AdminSpeakingAssignmentsView } from './components/AdminSpeakingAssignmentsView';
+import { AdminSubmissionsDashboardView } from './components/AdminSubmissionsDashboardView';
 import { StreakFlameWidget } from './components/StreakFlameWidget';
 import { StreakDetailModal } from './components/StreakDetailModal';
 
@@ -73,7 +75,7 @@ const CEFR_LEVELS = ['ALL', 'A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
 
 export default function App() {
   const queryClient = useQueryClient();
-  const [activeTab, setActiveTab] = useState<'decks' | 'notebooks' | 'grammar' | 'radar' | 'adminQuiz' | 'adminWriting' | 'adminSpeaking' | 'profile'>('decks');
+  const [activeTab, setActiveTab] = useState<'decks' | 'notebooks' | 'grammar' | 'radar' | 'adminQuiz' | 'adminWriting' | 'adminSpeaking' | 'adminSubmissions' | 'profile'>('decks');
   const [selectedCefr, setSelectedCefr] = useState('ALL');
   const [searchKeyword, setSearchKeyword] = useState('');
   const [token, setToken] = useState<string | null>(() => localStorage.getItem('access_token'));
@@ -264,6 +266,17 @@ export default function App() {
               >
                 <Mic size={16} />
                 Đề Speaking
+              </button>
+            )}
+            {(profileData?.user.role === 'ADMIN' || profileData?.user.role === 'TEACHER') && (
+              <button
+                onClick={() => setActiveTab('adminSubmissions')}
+                className={`px-4 py-2 rounded-xl text-sm font-bold transition flex items-center gap-2 ${
+                  activeTab === 'adminSubmissions' ? 'bg-teal-50 text-teal-600' : 'text-slate-600 hover:bg-slate-100'
+                }`}
+              >
+                <ClipboardCheck size={16} />
+                Bài Nộp
               </button>
             )}
             <button
@@ -464,6 +477,14 @@ export default function App() {
         {/* TAB ADMIN SPEAKING ASSIGNMENTS */}
         {activeTab === 'adminSpeaking' && (
           <AdminSpeakingAssignmentsView
+            token={token}
+            userRole={profileData?.user.role}
+          />
+        )}
+
+        {/* TAB ADMIN SUBMISSIONS DASHBOARD */}
+        {activeTab === 'adminSubmissions' && (
+          <AdminSubmissionsDashboardView
             token={token}
             userRole={profileData?.user.role}
           />

@@ -12,6 +12,7 @@ import { AssignmentsModule } from './modules/assignments/assignments.module';
 import { MediaModule } from './modules/media/media.module';
 import { NotificationsModule } from './modules/notifications/notifications.module';
 import { ClassesModule } from './modules/classes/classes.module';
+import { SubmissionsModule } from './modules/submissions/submissions.module';
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import { ClassesModule } from './modules/classes/classes.module';
     MediaModule,
     NotificationsModule,
     ClassesModule,
+    SubmissionsModule,
   ],
 })
 export class AppModule {}
