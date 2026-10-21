@@ -19,6 +19,7 @@ export interface StudentProfileOverview {
     id: string;
     email: string;
     fullName: string;
+    role?: string;
     avatarUrl: string | null;
     currentStreak: number;
     longestStreak: number;
@@ -98,6 +99,7 @@ export class StudentProfileService {
         id: user.id,
         email: user.email,
         fullName: user.fullName,
+        role: user.role,
         avatarUrl: user.avatarUrl,
         currentStreak: user.streak?.currentStreak ?? 0,
         longestStreak: user.streak?.longestStreak ?? 0,

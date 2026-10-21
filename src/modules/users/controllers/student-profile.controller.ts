@@ -25,7 +25,7 @@ import { UserGoalEntity } from '../entities/user-goal.entity';
 
 @Controller('student/profile')
 @UseGuards(JwtAuthGuard, RolesGuard)
-@Roles(UserRole.STUDENT)
+@Roles(UserRole.STUDENT, UserRole.TEACHER, UserRole.ADMIN)
 export class StudentProfileController {
   constructor(private readonly profileService: StudentProfileService) {}
 

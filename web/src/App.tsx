@@ -47,6 +47,7 @@ interface StudentProfile {
     id: string;
     email: string;
     fullName: string;
+    role?: string;
     avatarUrl: string | null;
     currentStreak: number;
     longestStreak: number;
@@ -418,7 +419,26 @@ export default function App() {
                     {profileData.user.fullName.charAt(0)}
                   </div>
                   <div className="flex-1 text-center md:text-left">
-                    <h2 className="text-xl font-bold text-slate-800">{profileData.user.fullName}</h2>
+                    <div className="flex items-center justify-center md:justify-start gap-2">
+                      <h2 className="text-xl font-bold text-slate-800">{profileData.user.fullName}</h2>
+                      {profileData.user.role && (
+                        <span
+                          className={`px-2 py-0.5 rounded-md text-[10px] font-black uppercase ${
+                            profileData.user.role === 'ADMIN'
+                              ? 'bg-purple-100 text-purple-700 border border-purple-200'
+                              : profileData.user.role === 'TEACHER'
+                                ? 'bg-emerald-100 text-emerald-700 border border-emerald-200'
+                                : 'bg-blue-100 text-blue-700 border border-blue-200'
+                          }`}
+                        >
+                          {profileData.user.role === 'ADMIN'
+                            ? '🛡️ Admin'
+                            : profileData.user.role === 'TEACHER'
+                              ? '👨‍🏫 Giảng Viên'
+                              : '🎓 Học Viên'}
+                        </span>
+                      )}
+                    </div>
                     <p className="text-xs text-slate-400 mt-0.5">{profileData.user.email}</p>
                     <button
                       onClick={() => setIsStreakModalOpen(true)}
