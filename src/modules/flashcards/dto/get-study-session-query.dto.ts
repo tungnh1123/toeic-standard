@@ -33,3 +33,4 @@ export class GetStudySessionQueryDto {
   })
   mode?: StudySessionMode = 'DUE_FIRST';
 }
+

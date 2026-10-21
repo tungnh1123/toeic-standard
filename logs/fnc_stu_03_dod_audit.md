@@ -34,3 +34,4 @@
 ### TRỤ CỘT 4: CLIENT INTEGRITY & CLEAN CODE
 * [x] **TanStack Query v5 Hooks:** `useStudySession`, `useToggleBookmark`, `useSavePersonalNote`, `useBookmarkedCards` chuẩn hóa invalidate query cache qua `flashcardKeys`.
 * [x] **Interactive 3D Study Modal:** Tích hợp đầy đủ trong Vite Web App với bàn phím phím tắt (Space để lật, Mũi tên trái/phải để chuyển thẻ, R để nghe lại), chế độ học (Đến hạn, Mới, Xáo trộn), bộ lọc chỉ từ đã gắn sao, và lưu ghi chú cá nhân tức thì.
+

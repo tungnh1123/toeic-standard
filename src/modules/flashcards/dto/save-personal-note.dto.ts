@@ -6,3 +6,4 @@ export class SavePersonalNoteDto {
   @MaxLength(1000, { message: 'Ghi chú tối đa 1000 ký tự.' })
   note: string;
 }
+
