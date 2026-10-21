@@ -4,6 +4,7 @@ import { CommonAuthModule } from './common/common-auth.module';
 import { UsersModule } from './modules/users/users.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { FlashcardsModule } from './modules/flashcards/flashcards.module';
+import { FlashcardImportModule } from './modules/flashcard-import/flashcard-import.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { FlashcardsModule } from './modules/flashcards/flashcards.module';
     UsersModule,
     AuthModule,
     FlashcardsModule,
+    FlashcardImportModule,
   ],
 })
 export class AppModule {}
