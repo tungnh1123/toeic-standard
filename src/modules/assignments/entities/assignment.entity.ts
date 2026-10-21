@@ -49,3 +49,4 @@ export class AssignmentEntity {
   @CreateDateColumn({ name: 'created_at', type: 'timestamptz' })
   createdAt: Date;
 }
+
