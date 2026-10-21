@@ -67,6 +67,8 @@ export const FlashcardStudySessionModal: React.FC<FlashcardStudySessionModalProp
   const [autoPlayAudio, setAutoPlayAudio] = useState<boolean>(true);
   const [noteInput, setNoteInput] = useState<string>('');
   const [isEditingNote, setIsEditingNote] = useState<boolean>(false);
+  const [sessionCards, setSessionCards] = useState<StudyCard[]>([]);
+  const [feedbackMessage, setFeedbackMessage] = useState<string | null>(null);
 
   const authHeaders = token ? { Authorization: `Bearer ${token}` } : {};
 
@@ -88,8 +90,58 @@ export const FlashcardStudySessionModal: React.FC<FlashcardStudySessionModalProp
     },
   });
 
-  const cards = data?.cards ?? [];
+  // Initialize or reset session cards
+  useEffect(() => {
+    if (data?.cards) {
+      setSessionCards([...data.cards]);
+      setCurrentIndex(0);
+    }
+  }, [data?.cards]);
+
+  const cards = sessionCards;
   const currentCard = cards[currentIndex];
+
+  // SM-2 Review Mutation
+  const reviewMutation = useMutation({
+    mutationFn: async ({ cardId, rating }: { cardId: string; rating: number }) => {
+      if (!token) return null;
+      const res = await axios.post(
+        `/api/v1/student/flashcards/${cardId}/review`,
+        { rating },
+        { headers: authHeaders },
+      );
+      return res.data.data;
+    },
+    onSuccess: (result) => {
+      if (result?.message) {
+        setFeedbackMessage(result.message);
+        setTimeout(() => setFeedbackMessage(null), 3000);
+      }
+      queryClient.invalidateQueries({ queryKey: ['decks'] });
+    },
+  });
+
+  const handleRateCard = (rating: 1 | 2 | 3 | 4) => {
+    if (!currentCard) return;
+
+    // Call API if logged in
+    reviewMutation.mutate({ cardId: currentCard.id, rating });
+
+    // In-session Relearning Queue: nếu đánh giá Quên / Khó (< 3), đẩy về cuối hàng đợi
+    if (rating < 3) {
+      setSessionCards((prev) => [...prev, currentCard]);
+      setFeedbackMessage(rating === 1 ? 'Đã thêm từ vào hàng đợi ôn lại trong phiên!' : 'Từ khó: sẽ gặp lại ở cuối phiên.');
+      setTimeout(() => setFeedbackMessage(null), 2500);
+    }
+
+    // Advance to next card or complete session
+    if (currentIndex < cards.length - 1) {
+      setCurrentIndex((prev) => prev + 1);
+    } else if (rating >= 3) {
+      setFeedbackMessage('🎉 Chúc mừng! Bạn đã hoàn thành toàn bộ phiên học SM-2.');
+    }
+    setIsFlipped(false);
+  };
 
   // Sync personal note input when currentCard changes
   useEffect(() => {
@@ -203,6 +255,14 @@ export const FlashcardStudySessionModal: React.FC<FlashcardStudySessionModalProp
         handlePrev();
       } else if (e.key.toLowerCase() === 'r') {
         playAudio(1.0);
+      } else if (e.key === '1') {
+        handleRateCard(1);
+      } else if (e.key === '2') {
+        handleRateCard(2);
+      } else if (e.key === '3') {
+        handleRateCard(3);
+      } else if (e.key === '4') {
+        handleRateCard(4);
       }
     };
     window.addEventListener('keydown', handleKeyDown);
@@ -556,6 +616,65 @@ export const FlashcardStudySessionModal: React.FC<FlashcardStudySessionModalProp
             </div>
           )}
         </div>
+
+        {/* FEEDBACK BANNER */}
+        {feedbackMessage && (
+          <div className="mx-6 mb-2 py-2 px-3 rounded-xl bg-blue-900/60 border border-blue-700/60 text-xs text-blue-200 text-center">
+            {feedbackMessage}
+          </div>
+        )}
+
+        {/* SM-2 RATING BAR */}
+        {cards.length > 0 && currentCard && (
+          <div className="px-6 py-3 bg-slate-900/90 border-t border-slate-800">
+            <div className="text-[11px] font-bold text-slate-400 mb-2 flex items-center justify-between">
+              <span>Đánh giá phản xạ SM-2 (Nhấn phím 1 - 4):</span>
+              <span className="text-[10px] text-slate-500 font-mono">
+                Chuỗi nhớ: {currentCard.repetitionCount || 0} lần
+              </span>
+            </div>
+            <div className="grid grid-cols-4 gap-2">
+              <button
+                onClick={() => handleRateCard(1)}
+                className="bg-rose-600 hover:bg-rose-700 active:scale-95 text-white py-2 px-1 rounded-xl flex flex-col items-center justify-center transition shadow-sm"
+              >
+                <span className="text-xs font-black">Quên (1)</span>
+                <span className="text-[10px] opacity-80">Học lại ngay</span>
+              </button>
+              <button
+                onClick={() => handleRateCard(2)}
+                className="bg-amber-600 hover:bg-amber-700 active:scale-95 text-white py-2 px-1 rounded-xl flex flex-col items-center justify-center transition shadow-sm"
+              >
+                <span className="text-xs font-black">Khó (2)</span>
+                <span className="text-[10px] opacity-80">~ 1 ngày</span>
+              </button>
+              <button
+                onClick={() => handleRateCard(3)}
+                className="bg-blue-600 hover:bg-blue-700 active:scale-95 text-white py-2 px-1 rounded-xl flex flex-col items-center justify-center transition shadow-sm"
+              >
+                <span className="text-xs font-black">Tốt (3)</span>
+                <span className="text-[10px] opacity-80">
+                  {currentCard.intervalDays === 0
+                    ? '1 ngày'
+                    : currentCard.intervalDays === 1
+                      ? '6 ngày'
+                      : `~ ${Math.round((currentCard.intervalDays || 1) * 2.5)} ngày`}
+                </span>
+              </button>
+              <button
+                onClick={() => handleRateCard(4)}
+                className="bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white py-2 px-1 rounded-xl flex flex-col items-center justify-center transition shadow-sm"
+              >
+                <span className="text-xs font-black">Dễ (4)</span>
+                <span className="text-[10px] opacity-80">
+                  {currentCard.intervalDays === 0
+                    ? '4 ngày'
+                    : `~ ${Math.round(Math.max(6, (currentCard.intervalDays || 1) * 2.6))} ngày`}
+                </span>
+              </button>
+            </div>
+          </div>
+        )}
 
         {/* BOTTOMBAR CONTROLS */}
         {cards.length > 0 && (
