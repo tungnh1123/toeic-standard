@@ -43,3 +43,4 @@
 * [x] **Web Authentication & Role Badge:**
   * Hỗ trợ đăng nhập với các tài khoản Admin / Teacher / Student.
   * Hiển thị huy hiệu vai trò phân màu trực quan (`🛡️ Admin` tím, `👨‍🏫 Giảng Viên` xanh lục, `🎓 Học Viên` xanh dương).
+
