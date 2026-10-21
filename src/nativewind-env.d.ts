@@ -87,3 +87,4 @@ declare module 'react-native' {
     alert: (title: string, message?: string, buttons?: unknown[]) => void;
   };
 }
+

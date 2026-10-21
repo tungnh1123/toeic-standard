@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserEntity } from './entities/user.entity';
 import { UserGoalEntity } from './entities/user-goal.entity';
+import { UserStreakEntity } from '../analytics/entities/user-streak.entity';
 import { ToeicExamAttemptEntity } from '../toeic/entities/toeic-exam-attempt.entity';
 import { StudentProfileService } from './services/student-profile.service';
 import { StudentProfileController } from './controllers/student-profile.controller';
@@ -11,6 +12,7 @@ import { StudentProfileController } from './controllers/student-profile.controll
     TypeOrmModule.forFeature([
       UserEntity,
       UserGoalEntity,
+      UserStreakEntity,
       ToeicExamAttemptEntity,
     ]),
   ],
@@ -19,4 +21,3 @@ import { StudentProfileController } from './controllers/student-profile.controll
   exports: [StudentProfileService],
 })
 export class UsersModule {}
-
