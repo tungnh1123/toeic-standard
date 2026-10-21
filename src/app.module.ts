@@ -7,6 +7,7 @@ import { FlashcardsModule } from './modules/flashcards/flashcards.module';
 import { FlashcardImportModule } from './modules/flashcard-import/flashcard-import.module';
 import { GrammarModule } from './modules/grammar/grammar.module';
 import { AnalyticsModule } from './modules/analytics/analytics.module';
+import { GrammarQuestionsModule } from './modules/grammar-questions/grammar-questions.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { AnalyticsModule } from './modules/analytics/analytics.module';
     FlashcardImportModule,
     GrammarModule,
     AnalyticsModule,
+    GrammarQuestionsModule,
   ],
 })
 export class AppModule {}
