@@ -18,6 +18,9 @@ import { CreateSpeakingAssignmentDto } from './dto/create-speaking-assignment.dt
 import { CreateAssignmentDto } from './dto/create-assignment.dto';
 import { UpdateAssignmentDto } from './dto/update-assignment.dto';
 import { FilterAssignmentDto } from './dto/filter-assignment.dto';
+import { AssignAssignmentDto } from './dto/assign-assignment.dto';
+import { ExtendDeadlineDto } from './dto/extend-deadline.dto';
+import { FilterAssignedListDto } from './dto/filter-assigned-list.dto';
 import { AssignmentEntity } from './entities/assignment.entity';
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 import { RolesGuard } from '../../common/guards/roles.guard';
@@ -93,6 +96,50 @@ export class AssignmentsAdminController {
     @Param('id', ParseUUIDPipe) id: string,
   ): Promise<{ success: boolean; id: string }> {
     return await this.assignmentsService.deleteAssignment(id);
+  }
+
+  /**
+   * Endpoint #56: Giao bài cho Lớp học hoặc Học viên kèm dueDate riêng
+   * POST /api/v1/admin/assignments/:id/assign
+   */
+  @Post(':id/assign')
+  @Roles(UserRole.ADMIN, UserRole.TEACHER)
+  @HttpCode(HttpStatus.OK)
+  public async assignAssignment(
+    @Param('id', ParseUUIDPipe) id: string,
+    @CurrentUser() user: JwtUserPayload,
+    @Body() dto: AssignAssignmentDto,
+  ) {
+    return await this.assignmentsService.assignAssignment(id, user.sub, user.role, dto);
+  }
+
+  /**
+   * Endpoint #58: Gia hạn Deadline bài tập cho lớp hoặc học viên
+   * PUT /api/v1/admin/assignments/:id/extend-deadline
+   */
+  @Put(':id/extend-deadline')
+  @Roles(UserRole.ADMIN, UserRole.TEACHER)
+  @HttpCode(HttpStatus.OK)
+  public async extendDeadline(
+    @Param('id', ParseUUIDPipe) id: string,
+    @CurrentUser() user: JwtUserPayload,
+    @Body() dto: ExtendDeadlineDto,
+  ) {
+    return await this.assignmentsService.extendDeadline(id, user.sub, user.role, dto);
+  }
+
+  /**
+   * Endpoint #59: Xem danh sách phân công, học viên đã giao bài và trạng thái nộp
+   * GET /api/v1/admin/assignments/:id/assigned-list
+   */
+  @Get(':id/assigned-list')
+  @Roles(UserRole.ADMIN, UserRole.TEACHER)
+  public async getAssignedList(
+    @Param('id', ParseUUIDPipe) id: string,
+    @CurrentUser() user: JwtUserPayload,
+    @Query() filter: FilterAssignedListDto,
+  ) {
+    return await this.assignmentsService.getAssignedList(id, user.sub, user.role, filter);
   }
 }
 
