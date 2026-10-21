@@ -41,3 +41,4 @@
 * [x] **TanStack Query v5 Hooks:** `useReviewCard`, `useBatchReview`, `useDueSummary`, `useRetentionStats` chuẩn hóa qua `flashcardKeys`.
 * [x] **Mobile Component:** `SrsRatingButtons.tsx` hỗ trợ 4 nút bấm dự đoán số ngày (`Quên`, `Khó`, `Tốt`, `Dễ`).
 * [x] **Web Modal:** Tích hợp 4 nút đánh giá trực tiếp trên thanh công cụ phiên học 3D, hỗ trợ phím tắt số `1`, `2`, `3`, `4` trên bàn phím, cùng cơ chế In-Session Relearning Queue tự động đẩy từ vựng quên về cuối phiên.
+

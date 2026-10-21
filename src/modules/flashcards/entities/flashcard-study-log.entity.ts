@@ -64,3 +64,4 @@ export class FlashcardStudyLogEntity {
   @CreateDateColumn({ name: 'reviewed_at', type: 'timestamptz' })
   reviewedAt: Date;
 }
+

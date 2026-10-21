@@ -44,3 +44,4 @@ export class RetentionStatsResponseDto {
   masteredCount: number;
   recentActivity: DailyActivityItem[];
 }
+

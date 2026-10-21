@@ -49,3 +49,4 @@ export class BatchReviewDto {
   @Type(() => BatchReviewCardItemDto)
   items: BatchReviewCardItemDto[];
 }
+
