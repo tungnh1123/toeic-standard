@@ -47,3 +47,4 @@
   * Hỗ trợ làm lại quiz không giới hạn (Retake Policy).
 * [x] **Seamless Connection:**
   * Cầu nối liền mạch từ màn hình đọc lý thuyết Markdown (`GrammarReaderModal.tsx`) và danh mục bài học (`GrammarView.tsx`) sang Quiz.
+

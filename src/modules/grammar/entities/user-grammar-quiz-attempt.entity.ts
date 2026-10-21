@@ -54,3 +54,4 @@ export class UserGrammarQuizAttemptEntity {
   @OneToMany(() => UserGrammarQuizAnswerEntity, (ans) => ans.attempt)
   answers?: UserGrammarQuizAnswerEntity[];
 }
+

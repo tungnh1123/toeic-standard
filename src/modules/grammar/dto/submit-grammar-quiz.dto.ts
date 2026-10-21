@@ -28,3 +28,4 @@ export class SubmitGrammarQuizDto {
   @Min(0, { message: 'Thời gian làm bài không được âm.' })
   durationSeconds: number;
 }
+

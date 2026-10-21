@@ -46,3 +46,4 @@ export class GrammarQuizQuestionEntity {
   @CreateDateColumn({ name: 'created_at', type: 'timestamptz' })
   createdAt: Date;
 }
+

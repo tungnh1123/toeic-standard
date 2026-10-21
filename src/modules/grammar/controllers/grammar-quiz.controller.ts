@@ -74,3 +74,4 @@ export class GrammarQuizController {
     return await this.quizService.getAttemptDetail(user.sub, attemptId);
   }
 }
+

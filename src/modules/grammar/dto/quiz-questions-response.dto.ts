@@ -11,3 +11,4 @@ export class QuizQuestionsResponseDto {
   totalQuestions: number;
   questions: StudentQuizQuestionItemDto[];
 }
+
