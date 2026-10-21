@@ -17,7 +17,11 @@ import {
   CheckCircle2,
   Volume2,
   RefreshCw,
+  Send,
+  Users,
 } from 'lucide-react';
+import { AssignAssignmentModal } from './AssignAssignmentModal';
+import { AssignedListModal } from './AssignedListModal';
 
 interface SpeakingRubricCriterion {
   key: string;
@@ -73,6 +77,10 @@ export const AdminSpeakingAssignmentsView: React.FC<AdminSpeakingAssignmentsView
   // Modal create/edit states
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingAssignment, setEditingAssignment] = useState<SpeakingAssignmentItem | null>(null);
+
+  // Distribution modals
+  const [assignModalAssignment, setAssignModalAssignment] = useState<{ id: string; title: string } | null>(null);
+  const [assignedListAssignment, setAssignedListAssignment] = useState<{ id: string; title: string } | null>(null);
 
   // Form states
   const [titleInput, setTitleInput] = useState('');
@@ -495,7 +503,21 @@ export const AdminSpeakingAssignmentsView: React.FC<AdminSpeakingAssignmentsView
                 </div>
 
                 {/* ACTION BUTTONS */}
-                <div className="flex md:flex-col items-center gap-2 self-start">
+                <div className="flex md:flex-col items-center gap-1.5 self-start">
+                  <button
+                    onClick={() => setAssignModalAssignment({ id: item.id, title: item.title })}
+                    className="p-2 text-slate-400 hover:text-emerald-600 hover:bg-emerald-50 rounded-xl transition"
+                    title="Giao bài cho lớp kèm Deadline"
+                  >
+                    <Send size={16} />
+                  </button>
+                  <button
+                    onClick={() => setAssignedListAssignment({ id: item.id, title: item.title })}
+                    className="p-2 text-slate-400 hover:text-purple-600 hover:bg-purple-50 rounded-xl transition"
+                    title="Danh sách học viên & Gia hạn Deadline"
+                  >
+                    <Users size={16} />
+                  </button>
                   <button
                     onClick={() => openEditModal(item)}
                     className="p-2 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-xl transition"
@@ -871,6 +893,27 @@ export const AdminSpeakingAssignmentsView: React.FC<AdminSpeakingAssignmentsView
             </form>
           </div>
         </div>
+      )}
+      {/* ASSIGN ASSIGNMENT MODAL */}
+      {assignModalAssignment && (
+        <AssignAssignmentModal
+          isOpen={!!assignModalAssignment}
+          onClose={() => setAssignModalAssignment(null)}
+          assignmentId={assignModalAssignment.id}
+          assignmentTitle={assignModalAssignment.title}
+          token={token}
+        />
+      )}
+
+      {/* ASSIGNED LIST & EXTEND DEADLINE MODAL */}
+      {assignedListAssignment && (
+        <AssignedListModal
+          isOpen={!!assignedListAssignment}
+          onClose={() => setAssignedListAssignment(null)}
+          assignmentId={assignedListAssignment.id}
+          assignmentTitle={assignedListAssignment.title}
+          token={token}
+        />
       )}
     </div>
   );

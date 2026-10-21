@@ -12,7 +12,11 @@ import {
   AlertCircle,
   X,
   Scale,
+  Send,
+  Users,
 } from 'lucide-react';
+import { AssignAssignmentModal } from './AssignAssignmentModal';
+import { AssignedListModal } from './AssignedListModal';
 
 interface RubricCriterion {
   key: string;
@@ -67,6 +71,10 @@ export const AdminWritingAssignmentsView: React.FC<AdminWritingAssignmentsViewPr
   // Modal create/edit states
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingAssignment, setEditingAssignment] = useState<AssignmentItem | null>(null);
+
+  // Distribution modals
+  const [assignModalAssignment, setAssignModalAssignment] = useState<{ id: string; title: string } | null>(null);
+  const [assignedListAssignment, setAssignedListAssignment] = useState<{ id: string; title: string } | null>(null);
 
   // Form states
   const [titleInput, setTitleInput] = useState('');
@@ -275,6 +283,20 @@ export const AdminWritingAssignmentsView: React.FC<AdminWritingAssignmentsViewPr
                     WRITING TEMPLATE
                   </span>
                   <div className="flex items-center gap-1">
+                    <button
+                      onClick={() => setAssignModalAssignment({ id: a.id, title: a.title })}
+                      className="p-1.5 rounded-lg text-slate-400 hover:text-emerald-600 hover:bg-emerald-50 transition"
+                      title="Giao bài cho lớp kèm Deadline"
+                    >
+                      <Send size={15} />
+                    </button>
+                    <button
+                      onClick={() => setAssignedListAssignment({ id: a.id, title: a.title })}
+                      className="p-1.5 rounded-lg text-slate-400 hover:text-purple-600 hover:bg-purple-50 transition"
+                      title="Danh sách học viên & Gia hạn Deadline"
+                    >
+                      <Users size={15} />
+                    </button>
                     <button
                       onClick={() => openEditModal(a)}
                       className="p-1.5 rounded-lg text-slate-400 hover:text-blue-600 hover:bg-blue-50 transition"
@@ -528,6 +550,27 @@ export const AdminWritingAssignmentsView: React.FC<AdminWritingAssignmentsViewPr
             </div>
           </div>
         </div>
+      )}
+      {/* ASSIGN ASSIGNMENT MODAL */}
+      {assignModalAssignment && (
+        <AssignAssignmentModal
+          isOpen={!!assignModalAssignment}
+          onClose={() => setAssignModalAssignment(null)}
+          assignmentId={assignModalAssignment.id}
+          assignmentTitle={assignModalAssignment.title}
+          token={token}
+        />
+      )}
+
+      {/* ASSIGNED LIST & EXTEND DEADLINE MODAL */}
+      {assignedListAssignment && (
+        <AssignedListModal
+          isOpen={!!assignedListAssignment}
+          onClose={() => setAssignedListAssignment(null)}
+          assignmentId={assignedListAssignment.id}
+          assignmentTitle={assignedListAssignment.title}
+          token={token}
+        />
       )}
     </div>
   );

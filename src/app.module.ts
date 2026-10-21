@@ -10,6 +10,8 @@ import { AnalyticsModule } from './modules/analytics/analytics.module';
 import { GrammarQuestionsModule } from './modules/grammar-questions/grammar-questions.module';
 import { AssignmentsModule } from './modules/assignments/assignments.module';
 import { MediaModule } from './modules/media/media.module';
+import { NotificationsModule } from './modules/notifications/notifications.module';
+import { ClassesModule } from './modules/classes/classes.module';
 
 @Module({
   imports: [
@@ -21,7 +23,7 @@ import { MediaModule } from './modules/media/media.module';
       password: process.env.DB_PASSWORD || 'admin',
       database: process.env.DB_NAME || 'toeic_db',
       autoLoadEntities: true,
-      synchronize: process.env.NODE_ENV !== 'production',
+      synchronize: false,
       logging: process.env.NODE_ENV === 'development',
     }),
     CommonAuthModule,
@@ -34,6 +36,8 @@ import { MediaModule } from './modules/media/media.module';
     GrammarQuestionsModule,
     AssignmentsModule,
     MediaModule,
+    NotificationsModule,
+    ClassesModule,
   ],
 })
 export class AppModule {}
