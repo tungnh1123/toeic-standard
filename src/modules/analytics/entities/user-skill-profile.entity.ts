@@ -56,3 +56,4 @@ export class UserSkillProfileEntity {
   @CreateDateColumn({ name: 'last_calculated_at', type: 'timestamptz' })
   lastCalculatedAt: Date;
 }
+

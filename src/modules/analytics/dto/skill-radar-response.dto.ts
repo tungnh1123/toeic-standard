@@ -35,3 +35,4 @@ export class SkillRadarResponseDto {
   recommendations: RecommendationItemDto[];
   lastCalculatedAt: string;
 }
+

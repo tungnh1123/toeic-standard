@@ -16,3 +16,4 @@ export class WeaknessDiagnosisResponseDto {
   diagnosisSummary: string;
   suggestedDailyMinutes: number;
 }
+

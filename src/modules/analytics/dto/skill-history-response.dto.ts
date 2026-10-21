@@ -14,3 +14,4 @@ export class SkillHistoryResponseDto {
   totalSnapshots: number;
   history: SkillHistorySnapshotDto[];
 }
+

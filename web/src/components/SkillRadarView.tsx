@@ -724,3 +724,4 @@ export const SkillRadarView: React.FC<SkillRadarViewProps> = ({
     </div>
   );
 };
+

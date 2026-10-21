@@ -15,3 +15,4 @@ export class HardWordsResponseDto {
   totalHardWords: number;
   words: HardWordItemDto[];
 }
+
