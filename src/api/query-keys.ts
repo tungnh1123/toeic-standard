@@ -11,6 +11,9 @@ export const flashcardKeys = {
     [...flashcardKeys.all, 'deck', deckId] as const,
   dueToday: () => [...flashcardKeys.all, 'due-today'] as const,
   sm2Retention: () => [...flashcardKeys.all, 'sm2-retention'] as const,
+  studySession: (params?: { deckId?: string; mode?: string; onlyBookmarked?: boolean }) =>
+    [...flashcardKeys.all, 'study-session', params ?? {}] as const,
+  bookmarks: () => [...flashcardKeys.all, 'bookmarks'] as const,
 };
 
 export const notebookKeys = {

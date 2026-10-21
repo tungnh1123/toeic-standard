@@ -86,5 +86,71 @@ declare module 'react-native' {
   export const Alert: {
     alert: (title: string, message?: string, buttons?: unknown[]) => void;
   };
+
+  export const StyleSheet: {
+    create: <T extends Record<string, unknown>>(styles: T) => T;
+  };
 }
+
+declare module 'react-native-reanimated' {
+  export interface SharedValue<T> {
+    value: T;
+  }
+  export function useSharedValue<T>(initialValue: T): SharedValue<T>;
+  export function useAnimatedStyle<T extends Record<string, unknown>>(
+    updater: () => T,
+    dependencies?: unknown[],
+  ): T;
+  export function withSpring(toValue: number, config?: Record<string, unknown>): number;
+  export function interpolate(
+    value: number,
+    inputRange: number[],
+    outputRange: number[],
+  ): number;
+  export function runOnJS<A extends unknown[], R>(fn: (...args: A) => R): (...args: A) => R;
+
+  export namespace Animated {
+    export const View: React.FC<{
+      children?: React.ReactNode;
+      style?: unknown;
+      className?: string;
+    }>;
+  }
+  export default Animated;
+}
+
+declare module 'react-native-gesture-handler' {
+  export interface GestureType {
+    onEnd: (callback: (event: { translationX: number }) => void) => GestureType;
+    onUpdate: (callback: (event: { translationX: number }) => void) => GestureType;
+    numberOfTaps: (count: number) => GestureType;
+  }
+  export const Gesture: {
+    Tap: () => GestureType;
+    Pan: () => GestureType;
+    Exclusive: (...gestures: GestureType[]) => GestureType;
+  };
+  export const GestureDetector: React.FC<{
+    gesture: GestureType;
+    children: React.ReactNode;
+  }>;
+}
+
+declare module 'expo-av' {
+  export namespace Audio {
+    export interface SoundObject {
+      sound: {
+        playAsync: () => Promise<unknown>;
+        unloadAsync: () => Promise<unknown>;
+      };
+    }
+    export const Sound: {
+      createAsync: (
+        source: { uri: string },
+        initialStatus?: { shouldPlay?: boolean; rate?: number; shouldCorrectPitch?: boolean },
+      ) => Promise<SoundObject>;
+    };
+  }
+}
+
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import {
@@ -10,15 +10,13 @@ import {
   Clock,
   Star,
   Search,
-  CheckCircle2,
   Lock,
   Mail,
   LogIn,
   LogOut,
-  ChevronRight,
-  TrendingUp,
-  Sparkles,
+  Play,
 } from 'lucide-react';
+import { FlashcardStudySessionModal } from './components/FlashcardStudySessionModal';
 
 interface DeckItem {
   id: string;
@@ -72,6 +70,7 @@ export default function App() {
   const [isTargetModalOpen, setIsTargetModalOpen] = useState(false);
   const [targetScoreInput, setTargetScoreInput] = useState('750');
   const [targetDateInput, setTargetDateInput] = useState('2026-12-31');
+  const [selectedStudyDeck, setSelectedStudyDeck] = useState<{ id: string; title: string } | null>(null);
 
   const authHeaders = token ? { Authorization: `Bearer ${token}` } : {};
 
@@ -317,8 +316,11 @@ export default function App() {
                         <span className="text-xs text-slate-500">
                           Tổng số: <strong className="text-slate-800">{deck.totalCards}</strong> thẻ
                         </span>
-                        <button className="text-xs font-bold text-blue-600 hover:text-blue-700 flex items-center gap-0.5">
-                          Xem chi tiết <ChevronRight size={14} />
+                        <button
+                          onClick={() => setSelectedStudyDeck({ id: deck.id, title: deck.title })}
+                          className="text-xs font-bold bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-xl shadow-sm transition flex items-center gap-1 active:scale-95"
+                        >
+                          <Play size={12} fill="currentColor" /> Luyện Thẻ 3D
                         </button>
                       </div>
                     </div>
@@ -545,6 +547,17 @@ export default function App() {
             </div>
           </div>
         </div>
+      )}
+
+      {/* 3D FLASHCARD STUDY SESSION MODAL */}
+      {selectedStudyDeck && (
+        <FlashcardStudySessionModal
+          deckId={selectedStudyDeck.id}
+          deckTitle={selectedStudyDeck.title}
+          token={token}
+          onClose={() => setSelectedStudyDeck(null)}
+          onRequireAuth={() => setIsAuthModalOpen(true)}
+        />
       )}
     </div>
   );
