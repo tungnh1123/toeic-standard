@@ -9,3 +9,4 @@ export class StreakCalendarResponseDto {
   totalActiveDays: number;
   activities: DayActivityItemDto[];
 }
+

@@ -5,3 +5,4 @@ export class StreakBadgeListResponseDto {
   unlockedCount: number;
   badges: StreakBadgeItemDto[];
 }
+

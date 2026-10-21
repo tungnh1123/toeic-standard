@@ -36,3 +36,4 @@ export class UserStreakBadgeEntity {
   @CreateDateColumn({ name: 'unlocked_at', type: 'timestamptz' })
   unlockedAt: Date;
 }
+
