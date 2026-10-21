@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import {
   ClipboardCheck,
@@ -16,7 +16,9 @@ import {
   ExternalLink,
   ChevronLeft,
   ChevronRight,
+  PenTool,
 } from 'lucide-react';
+import { WritingGradingStudioModal } from './WritingGradingStudioModal';
 
 interface SubmissionItem {
   id: string;
@@ -75,6 +77,10 @@ export const AdminSubmissionsDashboardView: React.FC<AdminSubmissionsDashboardVi
   // Detail preview modal state
   const [selectedSubmission, setSelectedSubmission] = useState<SubmissionItem | null>(null);
 
+  // Writing Grading Studio Modal state
+  const [gradingWritingSubmissionId, setGradingWritingSubmissionId] = useState<string | null>(null);
+
+  const queryClient = useQueryClient();
   const authHeaders = token ? { Authorization: `Bearer ${token}` } : {};
 
   // 1. Fetch Classes for filter dropdown
@@ -402,16 +408,26 @@ export const AdminSubmissionsDashboardView: React.FC<AdminSubmissionsDashboardVi
                 </div>
 
                 {/* RIGHT ACTIONS & STATUS */}
-                <div className="flex sm:flex-col items-end justify-between sm:justify-center gap-3 shrink-0 self-start sm:self-center">
+                <div className="flex sm:flex-col items-end justify-between sm:justify-center gap-2.5 shrink-0 self-start sm:self-center">
                   <div>{getStatusBadge(sub.status)}</div>
 
-                  <button
-                    onClick={() => setSelectedSubmission(sub)}
-                    className="px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white font-bold text-xs rounded-xl shadow-sm transition flex items-center gap-1.5 cursor-pointer"
-                  >
-                    <span>Xem & Chấm Điểm</span>
-                    <ExternalLink size={13} />
-                  </button>
+                  {sub.assignmentType === 'WRITING' ? (
+                    <button
+                      onClick={() => setGradingWritingSubmissionId(sub.id)}
+                      className="px-3.5 py-2 bg-teal-600 hover:bg-teal-700 text-white font-black text-xs rounded-xl shadow-sm transition flex items-center gap-1.5 cursor-pointer"
+                    >
+                      <PenTool size={13} />
+                      <span>Chấm Bài Writing</span>
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => setSelectedSubmission(sub)}
+                      className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-xl shadow-sm transition flex items-center gap-1.5 cursor-pointer"
+                    >
+                      <span>Xem Bài Nộp</span>
+                      <ExternalLink size={13} />
+                    </button>
+                  )}
                 </div>
               </div>
             </div>
@@ -522,6 +538,19 @@ export const AdminSubmissionsDashboardView: React.FC<AdminSubmissionsDashboardVi
             </div>
 
             <div className="flex justify-end gap-2 pt-4 border-t border-slate-100 mt-5">
+              {selectedSubmission.assignmentType === 'WRITING' && (
+                <button
+                  onClick={() => {
+                    const id = selectedSubmission.id;
+                    setSelectedSubmission(null);
+                    setGradingWritingSubmissionId(id);
+                  }}
+                  className="px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white font-black text-xs rounded-xl flex items-center gap-1.5"
+                >
+                  <PenTool size={13} />
+                  <span>Mở Writing Studio</span>
+                </button>
+              )}
               <button
                 onClick={() => setSelectedSubmission(null)}
                 className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-xl"
@@ -531,6 +560,19 @@ export const AdminSubmissionsDashboardView: React.FC<AdminSubmissionsDashboardVi
             </div>
           </div>
         </div>
+      )}
+
+      {/* WRITING GRADING STUDIO MODAL */}
+      {gradingWritingSubmissionId && (
+        <WritingGradingStudioModal
+          submissionId={gradingWritingSubmissionId}
+          token={token}
+          onClose={() => setGradingWritingSubmissionId(null)}
+          onGradedSuccess={() => {
+            queryClient.invalidateQueries({ queryKey: ['adminSubmissions'] });
+            setGradingWritingSubmissionId(null);
+          }}
+        />
       )}
     </div>
   );
