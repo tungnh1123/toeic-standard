@@ -16,3 +16,4 @@ export class QuizHistoryResponseDto {
   isPassed: boolean;
   attempts: QuizAttemptSummaryItemDto[];
 }
+

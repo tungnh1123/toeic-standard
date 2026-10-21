@@ -35,3 +35,4 @@ export class UserGrammarQuizAnswerEntity {
   @Column({ name: 'is_correct', type: 'boolean' })
   isCorrect: boolean;
 }
+

@@ -22,3 +22,4 @@ export class QuizResultResponseDto {
   submittedAt: string;
   questions: QuestionReviewItemDto[];
 }
+
