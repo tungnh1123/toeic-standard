@@ -683,6 +683,45 @@ export default function App() {
                 </div>
               </div>
 
+              {/* QUICK FILL BUTTONS */}
+              <div className="pt-1">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-1.5">
+                  Điền nhanh tài khoản mẫu:
+                </span>
+                <div className="grid grid-cols-3 gap-1.5">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setEmailInput('admin@toeic.edu.vn');
+                      setPasswordInput('Admin123!');
+                    }}
+                    className="py-1 px-1.5 bg-rose-50 hover:bg-rose-100 text-rose-700 text-[10px] font-black rounded-lg border border-rose-200 transition"
+                  >
+                    👑 Admin
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setEmailInput('teacher@toeic.edu.vn');
+                      setPasswordInput('Teacher123!');
+                    }}
+                    className="py-1 px-1.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-[10px] font-black rounded-lg border border-indigo-200 transition"
+                  >
+                    🎓 Giảng viên
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setEmailInput('test.student@example.com');
+                      setPasswordInput('Password123!');
+                    }}
+                    className="py-1 px-1.5 bg-teal-50 hover:bg-teal-100 text-teal-700 text-[10px] font-black rounded-lg border border-teal-200 transition"
+                  >
+                    ✏️ Học viên
+                  </button>
+                </div>
+              </div>
+
               {loginMutation.isError && (
                 <div className="text-xs text-rose-600 bg-rose-50 p-2.5 rounded-xl border border-rose-200">
                   Đăng nhập thất bại. Vui lòng kiểm tra lại email/mật khẩu!

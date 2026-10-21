@@ -19,3 +19,4 @@ export class CriterionScoreDto {
   @IsOptional()
   comment?: string;
 }
+

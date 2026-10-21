@@ -31,3 +31,4 @@ export class InlineFeedbackItemDto {
   @IsOptional()
   suggestion?: string;
 }
+

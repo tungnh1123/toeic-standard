@@ -49,3 +49,4 @@ export class SubmissionReviewEntity {
   @CreateDateColumn({ type: 'timestamptz', name: 'reviewed_at' })
   reviewedAt!: Date;
 }
+
