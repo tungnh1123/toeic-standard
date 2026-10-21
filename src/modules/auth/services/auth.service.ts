@@ -3,6 +3,7 @@ import {
   ConflictException,
   UnauthorizedException,
   NotFoundException,
+  BadRequestException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, DataSource, EntityManager } from 'typeorm';
@@ -33,8 +34,15 @@ export interface AuthResponseData {
   tokens: AuthTokens;
 }
 
+interface FailedAttemptInfo {
+  count: number;
+  lockedUntil?: Date;
+  lastAttemptAt: Date;
+}
+
 @Injectable()
 export class AuthService {
+  private static readonly failedAttempts = new Map<string, FailedAttemptInfo>();
   constructor(
     @InjectRepository(UserEntity)
     private readonly userRepo: Repository<UserEntity>,
@@ -111,13 +119,27 @@ export class AuthService {
     dto: LoginDto,
     metadata?: { ipAddress?: string; userAgent?: string },
   ): Promise<AuthResponseData> {
+    const emailKey = dto.email.trim().toLowerCase();
+    const now = new Date();
+
+    // 1. Kiểm tra Brute-force Lockout
+    const attempt = AuthService.failedAttempts.get(emailKey);
+    if (attempt?.lockedUntil && attempt.lockedUntil > now) {
+      const waitMinutes = Math.ceil((attempt.lockedUntil.getTime() - now.getTime()) / (1000 * 60));
+      throw new BadRequestException({
+        errorCode: 'ERR_AUTH_LOCKED',
+        message: `Tài khoản tạm thời bị khóa do đăng nhập sai quá nhiều lần. Vui lòng thử lại sau ${waitMinutes} phút.`,
+      });
+    }
+
     const user = await this.userRepo
       .createQueryBuilder('user')
       .addSelect('user.passwordHash')
-      .where('user.email = :email', { email: dto.email })
+      .where('LOWER(user.email) = LOWER(:email)', { email: dto.email })
       .getOne();
 
     if (!user) {
+      this.recordFailedAttempt(emailKey, now);
       throw new UnauthorizedException({
         errorCode: 'ERR_AUTH_001',
         message: 'Tài khoản hoặc mật khẩu không chính xác.',
@@ -126,11 +148,15 @@ export class AuthService {
 
     const isPasswordValid = await bcrypt.compare(dto.password, user.passwordHash);
     if (!isPasswordValid) {
+      this.recordFailedAttempt(emailKey, now);
       throw new UnauthorizedException({
         errorCode: 'ERR_AUTH_001',
         message: 'Tài khoản hoặc mật khẩu không chính xác.',
       });
     }
+
+    // Đăng nhập thành công -> Xóa lịch sử đăng nhập sai
+    AuthService.failedAttempts.delete(emailKey);
 
     const tokens = await this.dataSource.transaction(
       async (manager: EntityManager): Promise<AuthTokens> => {
@@ -148,6 +174,28 @@ export class AuthService {
       },
       tokens,
     };
+  }
+
+  private recordFailedAttempt(emailKey: string, now: Date): void {
+    const existing = AuthService.failedAttempts.get(emailKey) || {
+      count: 0,
+      lastAttemptAt: now,
+    };
+    existing.count += 1;
+    existing.lastAttemptAt = now;
+
+    if (existing.count >= 5) {
+      existing.lockedUntil = new Date(now.getTime() + 30 * 60 * 1000); // Khóa 30 phút
+    }
+
+    AuthService.failedAttempts.set(emailKey, existing);
+
+    if (existing.count >= 5) {
+      throw new BadRequestException({
+        errorCode: 'ERR_AUTH_LOCKED',
+        message: 'Tài khoản tạm thời bị khóa 30 phút do đăng nhập sai 5 lần liên tiếp.',
+      });
+    }
   }
 
   /**

@@ -12,7 +12,8 @@
     "start:prod": "node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\"",
     "typecheck": "tsc --noEmit",
-    "import:oxford": "ts-node src/scripts/import-oxford-matrix.ts"
+    "import:oxford": "ts-node src/scripts/import-oxford-matrix.ts",
+    "seed:admin": "node src/scripts/seed-admin-teacher.js"
   },
   "dependencies": {
     "@nestjs/common": "^10.3.0",
