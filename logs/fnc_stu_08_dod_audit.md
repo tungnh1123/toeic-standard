@@ -47,3 +47,4 @@
   * Thẻ quản lý Vé Bảo Lưu (Streak Freeze) kèm nút kích hoạt chủ động.
   * Ma trận lịch hoạt động 14 tuần (Activity Heatmap) tương tự GitHub Contribution Graph với mức độ đậm nhạt và ô màu băng tuyết cho ngày dùng vé bảo lưu.
   * Thư viện 6 mốc huy hiệu chuyên cần (Mồi Lửa Đầu Tiên, Ngọn Lửa Kiên Trì, Thói Quen Bền Vững, Chiến Binh Bất Bại, Bậc Thầy Kỷ Luật, Huyền Thoại Chuyên Cần).
+

@@ -29,3 +29,4 @@ export class StreakBadgeEntity {
   @Column({ name: 'reward_exp', type: 'int', default: 50 })
   rewardExp: number;
 }
+

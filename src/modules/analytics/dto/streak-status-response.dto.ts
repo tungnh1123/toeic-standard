@@ -20,3 +20,4 @@ export class StreakStatusResponseDto {
   daysToNextMilestone: number;
   nextMilestoneBadge: StreakBadgeItemDto | null;
 }
+

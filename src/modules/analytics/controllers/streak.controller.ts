@@ -69,3 +69,4 @@ export class StreakController {
     return await this.streakService.getStreakBadges(user.sub);
   }
 }
+
