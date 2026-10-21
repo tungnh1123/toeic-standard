@@ -8,14 +8,14 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, DataSource, EntityManager } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
-import { UserEntity } from '../users/entities/user.entity';
-import { UserGoalEntity } from '../users/entities/user-goal.entity';
-import { UserStreakEntity } from '../analytics/entities/user-streak.entity';
-import { UserRefreshTokenEntity } from './entities/user-refresh-token.entity';
-import { RegisterDto } from './dto/register.dto';
-import { LoginDto } from './dto/login.dto';
-import { RefreshTokenDto } from './dto/refresh-token.dto';
-import { UserRole, JwtUserPayload } from '../../common/decorators/roles.decorator';
+import { UserEntity } from '../../users/entities/user.entity';
+import { UserGoalEntity } from '../../users/entities/user-goal.entity';
+import { UserStreakEntity } from '../../analytics/entities/user-streak.entity';
+import { UserRefreshTokenEntity } from '../entities/user-refresh-token.entity';
+import { RegisterDto } from '../dto/register.dto';
+import { LoginDto } from '../dto/login.dto';
+import { RefreshTokenDto } from '../dto/refresh-token.dto';
+import { UserRole, JwtUserPayload } from '../../../common/decorators/roles.decorator';
 
 export interface AuthTokens {
   accessToken: string;
@@ -67,7 +67,7 @@ export class AuthService {
         fullName: dto.fullName,
         role: UserRole.STUDENT,
       });
-      const savedUser = await manager.save(UserEntity, user);
+      const savedUser: UserEntity = await manager.save(UserEntity, user);
 
       // 2. Khởi tạo UserGoal mặc định (650 điểm)
       const goal = manager.create(UserGoalEntity, {
@@ -269,4 +269,3 @@ export class AuthService {
     };
   }
 }
-
