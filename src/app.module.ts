@@ -9,6 +9,7 @@ import { GrammarModule } from './modules/grammar/grammar.module';
 import { AnalyticsModule } from './modules/analytics/analytics.module';
 import { GrammarQuestionsModule } from './modules/grammar-questions/grammar-questions.module';
 import { AssignmentsModule } from './modules/assignments/assignments.module';
+import { MediaModule } from './modules/media/media.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { AssignmentsModule } from './modules/assignments/assignments.module';
     AnalyticsModule,
     GrammarQuestionsModule,
     AssignmentsModule,
+    MediaModule,
   ],
 })
 export class AppModule {}

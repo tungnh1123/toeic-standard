@@ -14,7 +14,9 @@ import {
 } from '@nestjs/common';
 import { AssignmentsService, PaginatedAssignmentsResult } from './assignments.service';
 import { CreateWritingAssignmentDto } from './dto/create-writing-assignment.dto';
-import { UpdateWritingAssignmentDto } from './dto/update-writing-assignment.dto';
+import { CreateSpeakingAssignmentDto } from './dto/create-speaking-assignment.dto';
+import { CreateAssignmentDto } from './dto/create-assignment.dto';
+import { UpdateAssignmentDto } from './dto/update-assignment.dto';
 import { FilterAssignmentDto } from './dto/filter-assignment.dto';
 import { AssignmentEntity } from './entities/assignment.entity';
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
@@ -38,11 +40,11 @@ export class AssignmentsAdminController {
    */
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  public async createWritingAssignment(
+  public async createAssignment(
     @CurrentUser() user: JwtUserPayload,
-    @Body() dto: CreateWritingAssignmentDto,
+    @Body() dto: CreateAssignmentDto,
   ): Promise<AssignmentEntity> {
-    return await this.assignmentsService.createWritingAssignment(user.sub, dto);
+    return await this.assignmentsService.createAssignment(user.sub, dto);
   }
 
   /**
@@ -68,17 +70,17 @@ export class AssignmentsAdminController {
   }
 
   /**
-   * Endpoint #58: Cập nhật đề bài Writing gốc (chỉ khi chưa có bài nộp)
+   * Endpoint #58: Cập nhật đề bài tập gốc (Writing / Speaking / Quiz) - chỉ khi chưa có bài nộp
    * PUT /api/v1/admin/assignments/:id
    */
   @Put(':id')
   @HttpCode(HttpStatus.OK)
-  public async updateWritingAssignment(
+  public async updateAssignment(
     @Param('id', ParseUUIDPipe) id: string,
     @CurrentUser() user: JwtUserPayload,
-    @Body() dto: UpdateWritingAssignmentDto,
+    @Body() dto: UpdateAssignmentDto,
   ): Promise<AssignmentEntity> {
-    return await this.assignmentsService.updateWritingAssignment(id, user.sub, dto);
+    return await this.assignmentsService.updateAssignment(id, user.sub, dto);
   }
 
   /**
@@ -93,3 +95,4 @@ export class AssignmentsAdminController {
     return await this.assignmentsService.deleteAssignment(id);
   }
 }
+

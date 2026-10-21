@@ -20,3 +20,4 @@ export class CreateWritingAssignmentDto {
   @IsNotEmpty({ message: 'Cấu hình barem Rubric không được để trống.' })
   rubric: WritingRubricDto;
 }
+
