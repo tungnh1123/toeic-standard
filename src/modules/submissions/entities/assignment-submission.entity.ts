@@ -58,3 +58,4 @@ export class AssignmentSubmissionEntity {
   @CreateDateColumn({ type: 'timestamptz', name: 'submitted_at' })
   submittedAt!: Date;
 }
+

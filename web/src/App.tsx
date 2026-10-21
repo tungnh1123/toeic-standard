@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import {
@@ -117,6 +117,15 @@ export default function App() {
     enabled: Boolean(token),
   });
 
+  const isAdminOrTeacher = profileData?.user.role === 'ADMIN' || profileData?.user.role === 'TEACHER';
+
+  // Tự động chuyển tab sang Trang Quản Trị / Giảng Dạy nếu là Admin hoặc Giảng viên
+  useEffect(() => {
+    if (isAdminOrTeacher && ['decks', 'notebooks', 'grammar', 'radar'].includes(activeTab)) {
+      setActiveTab('adminSubmissions');
+    }
+  }, [isAdminOrTeacher, activeTab]);
+
   // 3. Login Mutation
   const loginMutation = useMutation({
     mutationFn: async () => {
@@ -130,6 +139,11 @@ export default function App() {
       localStorage.setItem('access_token', data.tokens.accessToken);
       setToken(data.tokens.accessToken);
       setIsAuthModalOpen(false);
+      if (data.user.role === 'ADMIN' || data.user.role === 'TEACHER') {
+        setActiveTab('adminSubmissions');
+      } else {
+        setActiveTab('decks');
+      }
       queryClient.invalidateQueries();
     },
   });
@@ -172,6 +186,7 @@ export default function App() {
   const handleLogout = () => {
     localStorage.removeItem('access_token');
     setToken(null);
+    setActiveTab('decks');
     queryClient.invalidateQueries();
   };
 
@@ -181,104 +196,122 @@ export default function App() {
       <header className="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm">
         <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center text-white font-black text-xl shadow-md shadow-blue-500/20">
-              T
+            <div className={`w-10 h-10 rounded-xl flex items-center justify-center text-white font-black text-xl shadow-md ${
+              isAdminOrTeacher ? 'bg-purple-600 shadow-purple-500/20 text-base' : 'bg-blue-600 shadow-blue-500/20'
+            }`}>
+              {isAdminOrTeacher ? '🛡️' : 'T'}
             </div>
             <div>
-              <span className="font-extrabold text-lg text-slate-800 tracking-tight">TOEIC Standard</span>
-              <span className="ml-2 text-[10px] font-bold bg-blue-50 text-blue-700 px-2 py-0.5 rounded-full uppercase">
-                v12.0 API
+              <span className="font-extrabold text-lg text-slate-800 tracking-tight">
+                {profileData?.user.role === 'ADMIN'
+                  ? 'Admin Portal'
+                  : profileData?.user.role === 'TEACHER'
+                    ? 'Teacher Portal'
+                    : 'TOEIC Standard'}
+              </span>
+              <span className={`ml-2 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase ${
+                isAdminOrTeacher ? 'bg-purple-50 text-purple-700 border border-purple-200' : 'bg-blue-50 text-blue-700'
+              }`}>
+                {profileData?.user.role === 'ADMIN'
+                  ? 'Quản Trị'
+                  : profileData?.user.role === 'TEACHER'
+                    ? 'Giảng Dạy'
+                    : 'v12.0 API'}
               </span>
             </div>
           </div>
 
           <div className="flex items-center gap-2">
-            <button
-              onClick={() => setActiveTab('decks')}
-              className={`px-4 py-2 rounded-xl text-sm font-bold transition flex items-center gap-2 ${
-                activeTab === 'decks' ? 'bg-blue-50 text-blue-600' : 'text-slate-600 hover:bg-slate-100'
-              }`}
-            >
-              <BookOpen size={16} />
-              Kho Thẻ CEFR
-            </button>
-            <button
-              onClick={() => {
-                if (!token) setIsAuthModalOpen(true);
-                else setActiveTab('notebooks');
-              }}
-              className={`px-4 py-2 rounded-xl text-sm font-bold transition flex items-center gap-2 ${
-                activeTab === 'notebooks' ? 'bg-blue-50 text-blue-600' : 'text-slate-600 hover:bg-slate-100'
-              }`}
-            >
-              <Bookmark size={16} />
-              Sổ Tay & Từ Khó
-            </button>
-            <button
-              onClick={() => setActiveTab('grammar')}
-              className={`px-4 py-2 rounded-xl text-sm font-bold transition flex items-center gap-2 ${
-                activeTab === 'grammar' ? 'bg-blue-50 text-blue-600' : 'text-slate-600 hover:bg-slate-100'
-              }`}
-            >
-              <GraduationCap size={16} />
-              Lý Thuyết Ngữ Pháp
-            </button>
-            <button
-              onClick={() => {
-                if (!token) setIsAuthModalOpen(true);
-                else setActiveTab('radar');
-              }}
-              className={`px-4 py-2 rounded-xl text-sm font-bold transition flex items-center gap-2 ${
-                activeTab === 'radar' ? 'bg-blue-50 text-blue-600' : 'text-slate-600 hover:bg-slate-100'
-              }`}
-            >
-              <Activity size={16} />
-              Radar 6 Kỹ Năng
-            </button>
-            {(profileData?.user.role === 'ADMIN' || profileData?.user.role === 'TEACHER') && (
-              <button
-                onClick={() => setActiveTab('adminQuiz')}
-                className={`px-4 py-2 rounded-xl text-sm font-bold transition flex items-center gap-2 ${
-                  activeTab === 'adminQuiz' ? 'bg-indigo-50 text-indigo-600' : 'text-slate-600 hover:bg-slate-100'
-                }`}
-              >
-                <HelpCircle size={16} />
-                Ngân Hàng Quiz
-              </button>
+            {/* TABS HỌC VIÊN: Chỉ hiển thị khi KHÔNG phải Admin/Teacher */}
+            {!isAdminOrTeacher && (
+              <>
+                <button
+                  onClick={() => setActiveTab('decks')}
+                  className={`px-4 py-2 rounded-xl text-sm font-bold transition flex items-center gap-2 ${
+                    activeTab === 'decks' ? 'bg-blue-50 text-blue-600' : 'text-slate-600 hover:bg-slate-100'
+                  }`}
+                >
+                  <BookOpen size={16} />
+                  Kho Thẻ CEFR
+                </button>
+                <button
+                  onClick={() => {
+                    if (!token) setIsAuthModalOpen(true);
+                    else setActiveTab('notebooks');
+                  }}
+                  className={`px-4 py-2 rounded-xl text-sm font-bold transition flex items-center gap-2 ${
+                    activeTab === 'notebooks' ? 'bg-blue-50 text-blue-600' : 'text-slate-600 hover:bg-slate-100'
+                  }`}
+                >
+                  <Bookmark size={16} />
+                  Sổ Tay & Từ Khó
+                </button>
+                <button
+                  onClick={() => setActiveTab('grammar')}
+                  className={`px-4 py-2 rounded-xl text-sm font-bold transition flex items-center gap-2 ${
+                    activeTab === 'grammar' ? 'bg-blue-50 text-blue-600' : 'text-slate-600 hover:bg-slate-100'
+                  }`}
+                >
+                  <GraduationCap size={16} />
+                  Lý Thuyết Ngữ Pháp
+                </button>
+                <button
+                  onClick={() => {
+                    if (!token) setIsAuthModalOpen(true);
+                    else setActiveTab('radar');
+                  }}
+                  className={`px-4 py-2 rounded-xl text-sm font-bold transition flex items-center gap-2 ${
+                    activeTab === 'radar' ? 'bg-blue-50 text-blue-600' : 'text-slate-600 hover:bg-slate-100'
+                  }`}
+                >
+                  <Activity size={16} />
+                  Radar 6 Kỹ Năng
+                </button>
+              </>
             )}
-            {(profileData?.user.role === 'ADMIN' || profileData?.user.role === 'TEACHER') && (
-              <button
-                onClick={() => setActiveTab('adminWriting')}
-                className={`px-4 py-2 rounded-xl text-sm font-bold transition flex items-center gap-2 ${
-                  activeTab === 'adminWriting' ? 'bg-rose-50 text-rose-600' : 'text-slate-600 hover:bg-slate-100'
-                }`}
-              >
-                <PenTool size={16} />
-                Đề Writing
-              </button>
+
+            {/* TABS QUẢN TRỊ & GIẢNG DẠY: Chỉ hiển thị cho Admin và Teacher */}
+            {isAdminOrTeacher && (
+              <>
+                <button
+                  onClick={() => setActiveTab('adminSubmissions')}
+                  className={`px-4 py-2 rounded-xl text-sm font-bold transition flex items-center gap-2 ${
+                    activeTab === 'adminSubmissions' ? 'bg-teal-50 text-teal-600' : 'text-slate-600 hover:bg-slate-100'
+                  }`}
+                >
+                  <ClipboardCheck size={16} />
+                  Bài Nộp
+                </button>
+                <button
+                  onClick={() => setActiveTab('adminWriting')}
+                  className={`px-4 py-2 rounded-xl text-sm font-bold transition flex items-center gap-2 ${
+                    activeTab === 'adminWriting' ? 'bg-rose-50 text-rose-600' : 'text-slate-600 hover:bg-slate-100'
+                  }`}
+                >
+                  <PenTool size={16} />
+                  Đề Writing
+                </button>
+                <button
+                  onClick={() => setActiveTab('adminSpeaking')}
+                  className={`px-4 py-2 rounded-xl text-sm font-bold transition flex items-center gap-2 ${
+                    activeTab === 'adminSpeaking' ? 'bg-indigo-50 text-indigo-600' : 'text-slate-600 hover:bg-slate-100'
+                  }`}
+                >
+                  <Mic size={16} />
+                  Đề Speaking
+                </button>
+                <button
+                  onClick={() => setActiveTab('adminQuiz')}
+                  className={`px-4 py-2 rounded-xl text-sm font-bold transition flex items-center gap-2 ${
+                    activeTab === 'adminQuiz' ? 'bg-indigo-50 text-indigo-600' : 'text-slate-600 hover:bg-slate-100'
+                  }`}
+                >
+                  <HelpCircle size={16} />
+                  Ngân Hàng Quiz
+                </button>
+              </>
             )}
-            {(profileData?.user.role === 'ADMIN' || profileData?.user.role === 'TEACHER') && (
-              <button
-                onClick={() => setActiveTab('adminSpeaking')}
-                className={`px-4 py-2 rounded-xl text-sm font-bold transition flex items-center gap-2 ${
-                  activeTab === 'adminSpeaking' ? 'bg-indigo-50 text-indigo-600' : 'text-slate-600 hover:bg-slate-100'
-                }`}
-              >
-                <Mic size={16} />
-                Đề Speaking
-              </button>
-            )}
-            {(profileData?.user.role === 'ADMIN' || profileData?.user.role === 'TEACHER') && (
-              <button
-                onClick={() => setActiveTab('adminSubmissions')}
-                className={`px-4 py-2 rounded-xl text-sm font-bold transition flex items-center gap-2 ${
-                  activeTab === 'adminSubmissions' ? 'bg-teal-50 text-teal-600' : 'text-slate-600 hover:bg-slate-100'
-                }`}
-              >
-                <ClipboardCheck size={16} />
-                Bài Nộp
-              </button>
-            )}
+
             <button
               onClick={() => {
                 if (!token) setIsAuthModalOpen(true);
@@ -289,10 +322,10 @@ export default function App() {
               }`}
             >
               <User size={16} />
-              Hồ Sơ Mục Tiêu
+              {isAdminOrTeacher ? 'Tài Khoản' : 'Hồ Sơ Mục Tiêu'}
             </button>
 
-            {token && (
+            {token && !isAdminOrTeacher && (
               <StreakFlameWidget
                 token={token}
                 onRequireAuth={() => setIsAuthModalOpen(true)}
