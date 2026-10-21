@@ -22,3 +22,4 @@ export class FilterAssignedListDto {
   @Type(() => Number)
   limit?: number = 20;
 }
+

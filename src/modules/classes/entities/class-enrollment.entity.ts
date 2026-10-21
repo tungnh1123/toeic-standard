@@ -33,3 +33,4 @@ export class ClassEnrollmentEntity {
   @CreateDateColumn({ type: 'timestamptz', name: 'enrolled_at' })
   enrolledAt!: Date;
 }
+

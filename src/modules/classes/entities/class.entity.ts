@@ -36,3 +36,4 @@ export class ClassEntity {
   @CreateDateColumn({ type: 'timestamptz', name: 'created_at' })
   createdAt!: Date;
 }
+

@@ -43,3 +43,4 @@ export class AssignmentTargetEntity {
   @Column({ type: 'boolean', name: 'is_completed', default: false })
   isCompleted!: boolean;
 }
+

@@ -20,3 +20,4 @@ export class CreateSpeakingAssignmentDto {
   @IsNotEmpty({ message: 'Cấu hình barem Speaking Rubric không được để trống.' })
   rubric: SpeakingRubricDto;
 }
+

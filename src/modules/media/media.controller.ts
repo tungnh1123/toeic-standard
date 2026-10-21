@@ -29,3 +29,4 @@ export class MediaController {
     return this.mediaService.generatePresignedUrl(user.sub, dto);
   }
 }
+

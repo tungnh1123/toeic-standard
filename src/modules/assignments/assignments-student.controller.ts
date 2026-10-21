@@ -24,3 +24,4 @@ export class AssignmentsStudentController {
     return await this.assignmentsService.getStudentAssignments(user.sub);
   }
 }
+

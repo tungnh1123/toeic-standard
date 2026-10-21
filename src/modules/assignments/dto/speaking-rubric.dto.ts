@@ -54,3 +54,4 @@ export class SpeakingRubricDto {
   @Type(() => SpeakingRubricCriterionDto)
   criteria: SpeakingRubricCriterionDto[];
 }
+

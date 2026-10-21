@@ -7,3 +7,4 @@ import { NotificationsQueueService } from './notifications-queue.service';
   exports: [NotificationsQueueService],
 })
 export class NotificationsModule {}
+

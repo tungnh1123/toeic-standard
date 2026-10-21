@@ -27,3 +27,4 @@ export class GeneratePresignedUrlDto {
   @Max(26214400, { message: 'Dung lượng file audio vượt quá giới hạn tối đa 25MB.' })
   fileSize: number;
 }
+

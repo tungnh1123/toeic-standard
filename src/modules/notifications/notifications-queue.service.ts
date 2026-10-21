@@ -32,3 +32,4 @@ export class NotificationsQueueService {
     return { jobId };
   }
 }
+

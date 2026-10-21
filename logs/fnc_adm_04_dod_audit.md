@@ -51,3 +51,4 @@
 
 ## KẾT LUẬN
 Module `FNC_ADM_04` đáp ứng 100% tiêu chí chất lượng và quy tắc 5 Ranh giới đỏ trong `AGENTS.md`. Sẵn sàng commit, merge `--no-ff` vào `main`, và push lên remote repo.
+

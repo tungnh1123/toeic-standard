@@ -16,3 +16,4 @@ export class CreateAssignmentDto {
   @IsOptional()
   rubric?: Record<string, unknown>;
 }
+

@@ -12,3 +12,4 @@ export class UpdateAssignmentDto {
   @IsOptional()
   rubric?: Record<string, unknown>;
 }
+
