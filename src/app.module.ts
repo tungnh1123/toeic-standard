@@ -8,6 +8,7 @@ import { FlashcardImportModule } from './modules/flashcard-import/flashcard-impo
 import { GrammarModule } from './modules/grammar/grammar.module';
 import { AnalyticsModule } from './modules/analytics/analytics.module';
 import { GrammarQuestionsModule } from './modules/grammar-questions/grammar-questions.module';
+import { AssignmentsModule } from './modules/assignments/assignments.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { GrammarQuestionsModule } from './modules/grammar-questions/grammar-ques
     GrammarModule,
     AnalyticsModule,
     GrammarQuestionsModule,
+    AssignmentsModule,
   ],
 })
 export class AppModule {}

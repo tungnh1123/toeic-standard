@@ -30,3 +30,4 @@ export class AssignmentQuestionEntity {
   @Column({ name: 'order_index', type: 'int', default: 0 })
   orderIndex: number;
 }
+

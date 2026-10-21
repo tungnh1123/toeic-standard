@@ -6,3 +6,4 @@ export class AttachQuestionsToAssignmentDto {
   @IsUUID('4', { each: true, message: 'Mỗi questionId phải là chuỗi UUID v4 hợp lệ.' })
   questionIds: string[];
 }
+
