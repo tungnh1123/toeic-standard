@@ -17,10 +17,12 @@ import {
   Play,
   Bookmark,
   GraduationCap,
+  Activity,
 } from 'lucide-react';
 import { FlashcardStudySessionModal } from './components/FlashcardStudySessionModal';
 import { NotebooksView } from './components/NotebooksView';
 import { GrammarView } from './components/GrammarView';
+import { SkillRadarView } from './components/SkillRadarView';
 import { StreakFlameWidget } from './components/StreakFlameWidget';
 import { StreakDetailModal } from './components/StreakDetailModal';
 
@@ -64,7 +66,7 @@ const CEFR_LEVELS = ['ALL', 'A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
 
 export default function App() {
   const queryClient = useQueryClient();
-  const [activeTab, setActiveTab] = useState<'decks' | 'notebooks' | 'grammar' | 'profile'>('decks');
+  const [activeTab, setActiveTab] = useState<'decks' | 'notebooks' | 'grammar' | 'radar' | 'profile'>('decks');
   const [selectedCefr, setSelectedCefr] = useState('ALL');
   const [searchKeyword, setSearchKeyword] = useState('');
   const [token, setToken] = useState<string | null>(() => localStorage.getItem('access_token'));
@@ -211,6 +213,18 @@ export default function App() {
             >
               <GraduationCap size={16} />
               Lý Thuyết Ngữ Pháp
+            </button>
+            <button
+              onClick={() => {
+                if (!token) setIsAuthModalOpen(true);
+                else setActiveTab('radar');
+              }}
+              className={`px-4 py-2 rounded-xl text-sm font-bold transition flex items-center gap-2 ${
+                activeTab === 'radar' ? 'bg-blue-50 text-blue-600' : 'text-slate-600 hover:bg-slate-100'
+              }`}
+            >
+              <Activity size={16} />
+              Radar 6 Kỹ Năng
             </button>
             <button
               onClick={() => {
@@ -378,6 +392,15 @@ export default function App() {
         {activeTab === 'grammar' && (
           <GrammarView
             token={token}
+            onRequireAuth={() => setIsAuthModalOpen(true)}
+          />
+        )}
+
+        {/* TAB SKILL RADAR 6D */}
+        {activeTab === 'radar' && (
+          <SkillRadarView
+            token={token}
+            onNavigateToTab={(tab) => setActiveTab(tab)}
             onRequireAuth={() => setIsAuthModalOpen(true)}
           />
         )}
