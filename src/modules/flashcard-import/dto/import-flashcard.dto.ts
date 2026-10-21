@@ -19,3 +19,4 @@ export class ImportDeckWordsResultDto {
   totalCardsCreated: number;
   totalCardsSkipped: number;
 }
+
