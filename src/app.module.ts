@@ -5,6 +5,7 @@ import { UsersModule } from './modules/users/users.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { FlashcardsModule } from './modules/flashcards/flashcards.module';
 import { FlashcardImportModule } from './modules/flashcard-import/flashcard-import.module';
+import { GrammarModule } from './modules/grammar/grammar.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { FlashcardImportModule } from './modules/flashcard-import/flashcard-impo
     AuthModule,
     FlashcardsModule,
     FlashcardImportModule,
+    GrammarModule,
   ],
 })
 export class AppModule {}

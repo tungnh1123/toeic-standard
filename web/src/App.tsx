@@ -16,9 +16,11 @@ import {
   LogOut,
   Play,
   Bookmark,
+  GraduationCap,
 } from 'lucide-react';
 import { FlashcardStudySessionModal } from './components/FlashcardStudySessionModal';
 import { NotebooksView } from './components/NotebooksView';
+import { GrammarView } from './components/GrammarView';
 
 interface DeckItem {
   id: string;
@@ -60,7 +62,7 @@ const CEFR_LEVELS = ['ALL', 'A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
 
 export default function App() {
   const queryClient = useQueryClient();
-  const [activeTab, setActiveTab] = useState<'decks' | 'notebooks' | 'profile'>('decks');
+  const [activeTab, setActiveTab] = useState<'decks' | 'notebooks' | 'grammar' | 'profile'>('decks');
   const [selectedCefr, setSelectedCefr] = useState('ALL');
   const [searchKeyword, setSearchKeyword] = useState('');
   const [token, setToken] = useState<string | null>(() => localStorage.getItem('access_token'));
@@ -197,6 +199,15 @@ export default function App() {
             >
               <Bookmark size={16} />
               Sổ Tay & Từ Khó
+            </button>
+            <button
+              onClick={() => setActiveTab('grammar')}
+              className={`px-4 py-2 rounded-xl text-sm font-bold transition flex items-center gap-2 ${
+                activeTab === 'grammar' ? 'bg-blue-50 text-blue-600' : 'text-slate-600 hover:bg-slate-100'
+              }`}
+            >
+              <GraduationCap size={16} />
+              Lý Thuyết Ngữ Pháp
             </button>
             <button
               onClick={() => {
@@ -348,6 +359,14 @@ export default function App() {
         {/* TAB NOTEBOOKS */}
         {activeTab === 'notebooks' && (
           <NotebooksView
+            token={token}
+            onRequireAuth={() => setIsAuthModalOpen(true)}
+          />
+        )}
+
+        {/* TAB GRAMMAR THEORY */}
+        {activeTab === 'grammar' && (
+          <GrammarView
             token={token}
             onRequireAuth={() => setIsAuthModalOpen(true)}
           />
