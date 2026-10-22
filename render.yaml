@@ -10,7 +10,7 @@ services:
     plan: free
     buildCommand: npm install && npm run build
     startCommand: npm run start:prod
-    healthCheckPath: /api/v1/auth/login
+    healthCheckPath: /api/v1
     envVars:
       - key: NODE_ENV
         value: production
@@ -31,3 +31,4 @@ databases:
     plan: free
     databaseName: toeic_db
     user: rl_admin
+

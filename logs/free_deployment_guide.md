@@ -163,3 +163,4 @@ Sau khi triển khai thành công, sử dụng các tài khoản sau để đăn
 - [ ] Redis/BullMQ tiếp nhận được job thông báo khi chấm điểm hoàn tất.
 - [ ] Frontend tải thành công qua HTTPS, chuyển tab và hiển thị đúng vai trò Admin/Học viên.
 - [ ] Studio Chấm Writing (ADM0302) lưu nháp và công bố điểm trơn tru.
+

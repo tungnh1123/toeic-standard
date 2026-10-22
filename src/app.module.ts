@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AppController } from './app.controller';
 import { CommonAuthModule } from './common/common-auth.module';
 import { UsersModule } from './modules/users/users.module';
 import { AuthModule } from './modules/auth/auth.module';
@@ -50,5 +51,6 @@ import { SubmissionsModule } from './modules/submissions/submissions.module';
     ClassesModule,
     SubmissionsModule,
   ],
+  controllers: [AppController],
 })
 export class AppModule {}

@@ -39,3 +39,4 @@ COPY --chown=node:node src/scripts/ ./dist/scripts/
 EXPOSE 3000
 
 CMD ["node", "dist/main.js"]
+
