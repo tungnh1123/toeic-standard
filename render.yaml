@@ -24,7 +24,7 @@ services:
           name: toeic-db
           property: connectionString
       - key: DB_SSL
-        value: "true"
+        value: "false"
 
 databases:
   # Free PostgreSQL Database 16
