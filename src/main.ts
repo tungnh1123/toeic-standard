@@ -3,7 +3,8 @@ dotenv.config();
 
 import { NestFactory } from '@nestjs/core';
 import { ValidationPipe, Logger } from '@nestjs/common';
-import express, { Request, Response, NextFunction } from 'express';
+import * as express from 'express';
+import { Request, Response, NextFunction } from 'express';
 import { join } from 'path';
 import * as fs from 'fs';
 import { AppModule } from './app.module';
