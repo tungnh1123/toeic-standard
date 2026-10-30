@@ -8,6 +8,7 @@ services:
     name: toeic-backend
     env: node
     plan: free
+    region: singapore
     buildCommand: npm install --include=dev && npm run build
     startCommand: npm run start:prod
     healthCheckPath: /api/v1
@@ -26,9 +27,10 @@ services:
         value: "true"
 
 databases:
-  # Free PostgreSQL Database (Expires after 90 days on Render free tier, or replace with Neon.tech)
+  # Free PostgreSQL Database 16
   - name: toeic-db
     plan: free
+    region: singapore
     databaseName: toeic_db
     user: rl_admin
 
