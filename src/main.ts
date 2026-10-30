@@ -3,6 +3,9 @@ dotenv.config();
 
 import { NestFactory } from '@nestjs/core';
 import { ValidationPipe, Logger } from '@nestjs/common';
+import express, { Request, Response, NextFunction } from 'express';
+import { join } from 'path';
+import * as fs from 'fs';
 import { AppModule } from './app.module';
 import { TransformResponseInterceptor } from './common/interceptors/transform-response.interceptor';
 import { AllExceptionsFilter } from './common/filters/all-exceptions.filter';
@@ -34,9 +37,28 @@ async function bootstrap(): Promise<void> {
     credentials: true,
   });
 
+  // 5. Phục vụ giao diện Frontend Web SPA trực tiếp từ thư mục web/dist nếu tồn tại
+  const webDistPath = join(process.cwd(), 'web/dist');
+  if (fs.existsSync(webDistPath)) {
+    app.use(express.static(webDistPath));
+    const server = app.getHttpAdapter().getInstance();
+    server.get('*', (req: Request, res: Response, next: NextFunction) => {
+      if (req.path.startsWith('/api')) {
+        return next();
+      }
+      const indexPath = join(webDistPath, 'index.html');
+      if (fs.existsSync(indexPath)) {
+        return res.sendFile(indexPath);
+      }
+      return next();
+    });
+    logger.log(`Đã nạp giao diện Web Frontend từ: ${webDistPath}`);
+  }
+
   const port = Number(process.env.PORT) || 3000;
   await app.listen(port);
   logger.log(`Ứng dụng Backend NestJS đang chạy tại: http://localhost:${port}/api/v1`);
 }
 
 bootstrap();
+
