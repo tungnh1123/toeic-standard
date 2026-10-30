@@ -4,7 +4,7 @@
   "description": "Online TOEIC Learning & Exam Preparation System",
   "private": true,
   "scripts": {
-    "build": "nest build && cd web && npm install && npm run build",
+    "build": "nest build && cd web && npm install --include=dev && npm run build",
     "format": "prettier --write \"src/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
