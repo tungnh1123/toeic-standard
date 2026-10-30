@@ -8,7 +8,7 @@ services:
     name: toeic-backend
     env: node
     plan: free
-    region: singapore
+    region: oregon
     buildCommand: npm install --include=dev && npm run build
     startCommand: npm run start:prod
     healthCheckPath: /api/v1
@@ -30,7 +30,7 @@ databases:
   # Free PostgreSQL Database 16
   - name: toeic-db
     plan: free
-    region: singapore
+    region: oregon
     databaseName: toeic_db
     user: rl_admin
 
